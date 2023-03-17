@@ -1,0 +1,47 @@
+plugins {
+    id "net.serenity-bdd.serenity-gradle-plugin" version "3.6.7"
+    id 'java'
+    id 'idea'
+}
+defaultTasks 'clean','test','aggregate'
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+sourceCompatibility = 11
+targetCompatibility = 11
+
+ext {
+    slf4jVersion = '1.7.7'
+    serenityCoreVersion = '3.6.12'
+    junitVersion = '5.9.2'
+    assertJVersion = '3.24.2'
+    logbackVersion = '1.4.5'
+}
+
+dependencies {
+    implementation 'org.seleniumhq.selenium:selenium:2.0b3'
+    implementation 'junit:junit:4.13.2'
+    implementation 'org.seleniumhq.selenium:selenium-api:4.8.1'
+    implementation 'org.seleniumhq.selenium:selenium-java:4.8.1'
+    implementation 'org.seleniumhq.selenium:selenium-common:2.0b1'
+    implementation 'org.seleniumhq.selenium:selenium-server:3.141.59'
+    testImplementation "net.serenity-bdd:serenity-core:${serenityCoreVersion}",
+            "net.serenity-bdd:serenity-junit5:${serenityCoreVersion}",
+            "net.serenity-bdd:serenity-screenplay:${serenityCoreVersion}",
+            "net.serenity-bdd:serenity-ensure:${serenityCoreVersion}",
+            "net.serenity-bdd:serenity-screenplay-webdriver:${serenityCoreVersion}",
+            "net.serenity-bdd:serenity-cucumber:${serenityCoreVersion}",
+            "org.junit.jupiter:junit-jupiter-api:${junitVersion}",
+            "org.assertj:assertj-core:${assertJVersion}",
+            "ch.qos.logback:logback-classic:${logbackVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+}
+gradle.startParameter.continueOnFailure = true
+test.finalizedBy(aggregate)
+
+test {
+    useJUnitPlatform()
+}
